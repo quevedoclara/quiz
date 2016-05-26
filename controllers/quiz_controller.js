@@ -1,4 +1,4 @@
- var models = require('../models');
+var models = require('../models');
 var Sequelize = require('sequelize');
 exports.load = function(req, res, next, quizId) {
 models.Quiz.findById(quizId)
@@ -12,13 +12,11 @@ next(new Error('No existe quizId=' + quizId));
 })
 .catch(function(error) { next(error); });
 };
-
 // GET /quizzes/new
 exports.new = function(req, res, next) {
 var quiz = models.Quiz.build({question: "", answer: ""});
 res.render('quizzes/new', {quiz: quiz});
 };
-
 // POST /quizzes/create
 exports.create = function(req, res, next) {
 var quiz = models.Quiz.build({ question: req.body.quiz.question,
@@ -30,12 +28,10 @@ req.flash('success', 'Quiz creado con éxito.');
 res.redirect('/quizzes'); // res.redirect: Redirección HTTP a lista de preguntas
 })
 .catch(Sequelize.ValidationError, function(error) {
-
 req.flash('error', 'Errores en el formulario:');
 for (var i in error.errors) {
 req.flash('error', error.errors[i].value);
 };
-
 res.render('quizzes/new', {quiz: quiz});
 })
 .catch(function(error) {
@@ -43,7 +39,6 @@ req.flash('error','Error al crear un Quiz: '+ error.message);
 next(error);
 });
 };
-
 // GET /quizzes
 exports.index = function(req, res, next) {
 var search = req.query.search || '';
@@ -80,7 +75,6 @@ next(error);
 next(new Error('Error de formato'));
 }
 }
-
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
 var format = req.params.format || '.';
@@ -100,15 +94,11 @@ next(error);
 next(new Error('Error de formato'));
 }
 };
-
 // GET /quizzes/:id/edit
 exports.edit = function(req, res, next) {
 var quiz = req.quiz; // req.quiz: autoload de instancia de quiz
-
 res.render('quizzes/edit', {quiz: quiz});
 };
-
-
 // PUT /quizzes/:id
 exports.update = function(req, res, next) {
 req.quiz.question = req.body.quiz.question;
@@ -123,10 +113,22 @@ req.flash('error', 'Errores en el formulario:');
 for (var i in error.errors) {
 req.flash('error', error.errors[i].value);
 };
-
 res.render('quizzes/edit', {quiz: req.quiz});
 })
 .catch(function(error) {
+req.flash('error', 'Error al editar el Quiz: '+error.message);
+next(error);
+});
+};
+
+ // DELETE /quizzes/:id
+exports.destroy = function(req, res, next) {
+req.quiz.destroy()
+.then( function() {
+req.flash('success', 'Quiz borrado con éxito.');
+res.redirect('/quizzes');
+})
+.catch(function(error){
 req.flash('error', 'Error al editar el Quiz: '+error.message);
 next(error);
 });
@@ -140,4 +142,3 @@ res.render('quizzes/result', { quiz: req.quiz,
 result: result,
 answer: answer });
 };
-

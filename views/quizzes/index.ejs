@@ -1,28 +1,32 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
-	<meta charset ="utf-8">
-	<title> Quiz </title>
-	<link rel='stylesheet' href='/stylesheets/style.css' />
+<meta charset ="utf-8">
+<title> Quiz </title>
+<link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-	<table>
-		<% for (var i in quizzes) { %>
-		<tr>
-		<td>
-			<a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
-		</td>
-		<td>
-			<a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a>
-		</td>
-		</tr>
-		<% } %>
-	</table>
-
-	<a href="/quizzes/new"><button type="button">Crear nueva pregunta</button></a>
-	<form method="get" action="/quizzes" >
-	<p>¿Qué palabra quieres buscar?</p>
-	<input type="text" name="search">
-	<input type="submit" value="Enviar" >
-	</form>
+<table>
+<% for (var i in quizzes) { %>
+<tr>
+<td>
+<a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
+</td>
+<td>
+<a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a>
+</td>
+<td>
+<a href="/quizzes/<%= quizzes[i].id %>?_method=DELETE" onClick="return confirm('Borrar: <%= quizzes[i].question %>');">
+ <button>borrar</button>
+</a>
+</td>
+</tr>
+<% } %>
+</table>
+<a href="/quizzes/new"><button type="button">Crear pregunta</button></a>
+<form method="get" action="/quizzes" >
+<p>¿Qué palabra quieres buscar?</p>
+<input type="text" name="search">
+<input type="submit" value="Enviar" ></div><div>
+</form>
 </body> </html>
