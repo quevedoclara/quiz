@@ -1,0 +1,12 @@
+body { background : #333;}
+
+#page:after {content : "Smarphone Layout";}
+.no-narrow {display:none;}
+
+
+#flashinfo { color :black ;}
+#flashsuccess { color :black ;}
+#flasherror { color :black ;}
+
+body {font-size: xx-large;}
+footer, input {font-size: large; }

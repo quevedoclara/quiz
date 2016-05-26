@@ -5,13 +5,19 @@
 	<title> Quiz </title>
 	<link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
-
 <body>
-	<table> <% for (var i in quizzes) { %>
-	<tr>	
-	<td><a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a></td>
-	</tr>
-	<% } %>
+	<table>
+		<% for (var i in quizzes) { %>
+		<tr>
+		<td>
+			<a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
+		</td>
+		</tr>
+		<% } %>
 	</table>
-</body>
-</html>
+	<form method="get" action="/quizzes" >
+	<p>¿Qué palabra quieres buscar?</p>
+	<input type="text" name="search">
+	<input type="submit" value="Enviar" >
+	</form>
+</body> </html>
