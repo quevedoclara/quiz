@@ -9,11 +9,15 @@ storage= "quiz.sqlite";
 url = process.env.DATABASE_URL;
 storage =process.env.DATABASE_STORAGE || "";
 }
-
 var sequelize = new Sequelize( url, { storage: storage, omitNull:true} );
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
-// Importar la definicion de la tabla Quiz de quiz.js
+var Comment = sequelize.import(path.join(__dirname,'comment'));
 
+ // Relaciones entre modelos
+ Comment.belongsTo(Quiz);
+ Quiz.hasMany(Comment);
+
+// Importar la definicion de la tabla Quiz de quiz.js
 /* sequelize.sync()
 .then(function() {
 return Quiz.count()
@@ -35,3 +39,4 @@ process.exit(1);
 }); */
 
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
+exports.Comment = Comment; 
