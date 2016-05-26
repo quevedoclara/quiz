@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset ="utf-8">
+	<title> Quiz </title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+	<table> <% for (var i in quizzes) { %>
+	<tr>	
+	<td><a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a></td>
+	</tr>
+	<% } %>
+	</table>
+</body>
+</html>
