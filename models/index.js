@@ -12,11 +12,10 @@ storage =process.env.DATABASE_STORAGE || "";
 var sequelize = new Sequelize( url, { storage: storage, omitNull:true} );
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 var Comment = sequelize.import(path.join(__dirname,'comment'));
-
- // Relaciones entre modelos
- Comment.belongsTo(Quiz);
- Quiz.hasMany(Comment);
-
+var User = sequelize.import(path.join(__dirname,'user'));
+// Relaciones entre modelos
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
 // Importar la definicion de la tabla Quiz de quiz.js
 /* sequelize.sync()
 .then(function() {
@@ -37,6 +36,6 @@ console.log('Base de datos inicializada con datos');
 console.log("Error Sincronizando las tablas de la BBDD:", error);
 process.exit(1);
 }); */
-
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
-exports.Comment = Comment; 
+exports.Comment = Comment;
+exports.User = User;
