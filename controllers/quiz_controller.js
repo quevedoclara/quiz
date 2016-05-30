@@ -17,14 +17,29 @@ exports.new = function(req, res, next) {
 var quiz = models.Quiz.build({question: "", answer: ""});
 res.render('quizzes/new', {quiz: quiz});
 };
+ // MW que permite acciones solamente si al usuario logeado es admin o es el autor del quiz.
+exports.ownershipRequired = function(req, res, next){
+
+ var isAdmin = req.session.user.isAdmin;
+ var quizAuthorId = req.quiz.AuthorId;
+ var loggedUserId = req.session.user.id;
+
+ if (isAdmin || quizAuthorId === loggedUserId) {
+ next();
+ } else {
+ console.log('Operación prohibida: El usuario logeado no es el autor del quiz, ni un administrador.');
+ res.send(403);
+ }
+};
+
 // POST /quizzes/create
 exports.create = function(req, res, next) {
- var authorId = req.session.user && req.session.user.id || 0;
+var authorId = req.session.user && req.session.user.id || 0;
 var quiz = models.Quiz.build({ question: req.body.quiz.question,
- answer: req.body.quiz.answer,
- AuthorId: authorId} );
+answer: req.body.quiz.answer,
+AuthorId: authorId} );
 // guarda en DB los campos pregunta y respuesta de quiz
- quiz.save({fields: ["question", "answer", "AuthorId"]})
+quiz.save({fields: ["question", "answer", "AuthorId"]})
 .then(function(quiz) {
 req.flash('success', 'Quiz creado con éxito.');
 res.redirect('/quizzes'); // res.redirect: Redirección HTTP a lista de preguntas
@@ -56,7 +71,7 @@ next(error);
 });
 }else{
 search1 = "%" + search.replace("","%") +"%";
- models.Quiz.findAll({where: ["question like ?", search1]})
+models.Quiz.findAll({where: ["question like ?", search1]})
 .then(function(quizzes) {
 quizzes.sort();
 res.render('quizzes/index.ejs', { quizzes: quizzes});

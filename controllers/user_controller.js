@@ -22,6 +22,23 @@ res.render('users/index', { users: users });
 })
 .catch(function(error) { next(error); });
 };
+
+
+// MW que permite acciones solamente si al usuario logeado es admin o rl propio usuario.
+exports.ownershipRequired = function(req, res, next){
+
+ var isAdmin = req.session.user.isAdmin;
+ var userId = req.user.id;
+ var loggedUserId = req.session.user.id;
+
+ if (isAdmin || userId === loggedUserId) {
+ next();
+ } else {
+ console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+ res.send(403); }
+};
+
+
 // GET /users/:id
 exports.show = function(req, res, next) {
 res.render('users/show', {user: req.user});
@@ -88,41 +105,36 @@ res.render('users/edit', {user: req.user});
 next(error);
 });
 };
-
 // DELETE /users/:id
 exports.destroy = function(req, res, next) {
 req.user.destroy()
 .then(function() {
-
- // Borrando usuario logeado.
- if (req.session.user && req.session.user.id === req.user.id) {
- // borra la sesión y redirige a /
- delete req.session.user;
- }
-
+// Borrando usuario logeado.
+if (req.session.user && req.session.user.id === req.user.id) {
+// borra la sesión y redirige a /
+delete req.session.user;
+}
 req.flash('success', 'Usuario eliminado con éxito.');
- res.redirect('/');
+res.redirect('/');
 })
 .catch(function(error){
 next(error);
 });
 };
-
 /*
- * Autenticar un usuario: Comprueba si el usuario esta registrado en users
- *
- * Devuelve una Promesa que busca el usuario con el login dado y comprueba su password.
- * La promesa se satisface si todo es correcto, y devuelve un objeto con el User.
- * La promesa falla si la autenticación falla o si hay errores.
- */
+* Autenticar un usuario: Comprueba si el usuario esta registrado en users
+*
+* Devuelve una Promesa que busca el usuario con el login dado y comprueba su password.
+* La promesa se satisface si todo es correcto, y devuelve un objeto con el User.
+* La promesa falla si la autenticación falla o si hay errores.
+*/
 exports.autenticar = function(login, password) {
-
- return models.User.findOne({where: {username: login}})
- .then(function(user) {
- if (user && user.verifyPassword(password)) {
- return user;
- } else {
- throw new Error('Autenticación fallida.');
- }
- });
-};
+return models.User.findOne({where: {username: login}})
+.then(function(user) {
+if (user && user.verifyPassword(password)) {
+return user;
+} else {
+throw new Error('Autenticación fallida.');
+}
+});
+}; 
