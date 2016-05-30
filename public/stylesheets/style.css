@@ -1,19 +1,18 @@
 * {margin:0; padding: 0;}
 body {
-  text-align: center;
   font: 16px Georgia,serif;
-  color:black;
+  color:white;
 }
 .page {
 	margin:2% auto;
 	color:white;
 }
 .main {
-	border :1px solid blue;
+	border :1px solid #999;
     padding: 1%;
     margin-bottom : 1px;
     color: black;
-    background: white;
+    background: #eee;
 }
 
 #flashinfo { color :black ;}
@@ -21,14 +20,14 @@ body {
 #flasherror { color :black ;}
 
 a {
-  color: blue;
+  color: #00B7FF;
 }
 
 section > div { padding : 20px;}
 
 header {text-align:center;}
 nav {text-align:center;}
-section {text-align:center;}
+section {text-align:left;}
 footer {text-align:center;}
 
 nav a {margin: 0px 10px 0px 0px ;}
