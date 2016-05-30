@@ -36,6 +36,9 @@ console.log('Base de datos inicializada con datos');
 console.log("Error Sincronizando las tablas de la BBDD:", error);
 process.exit(1);
 }); */
+User.hasMany(Quiz, {foreignKey: 'AuthorId'});
+Quiz.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'});
+
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
 exports.Comment = Comment;
-exports.User = User;
+exports.User = User; 
