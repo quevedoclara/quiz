@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <p>
 <form method="get" action="/quizzes/<%= quiz.id %>/check">
 <p>
@@ -20,9 +21,15 @@ Pregunta: <%= quiz.question %>
 var comment = quiz.Comments[i];
 if (comment.accepted) { %>
 <li> <%= comment.text %> </li>
+<% if (comment.AuthorId) { %>
+Creado por: <%= comment.Author.username %>
+<% } %>
 <% } else if (session.user &&
-			(session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
+(session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
 <li> <%= comment.text %> </li>
+<% if (comment.AuthorId) { %>
+Creado por: <%= comment.Author.username %>
+<% } %>
 <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
 <button>Aceptar</button>
 </a>

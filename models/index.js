@@ -16,29 +16,10 @@ var User = sequelize.import(path.join(__dirname,'user'));
 // Relaciones entre modelos
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
-// Importar la definicion de la tabla Quiz de quiz.js
-/* sequelize.sync()
-.then(function() {
-return Quiz.count()
-.then(function (c) {
-if (c === 0) { // la tabla se inicializa solo si está vacía
-return Quiz.bulkCreate([ {question: 'Capital de Italia', answer: 'Roma'},
-{question: 'Capital de Portugal', answer: 'Lisboa'},
-{question: 'Capital de Argentina', answer: 'Buenos Aires'}
-])
-.then(function() {
-console.log('Base de datos inicializada con datos');
-});
-}
-});
-})
-.catch(function(error) {
-console.log("Error Sincronizando las tablas de la BBDD:", error);
-process.exit(1);
-}); */
+User.hasMany(Comment,{foreignKey: 'AuthorId'});
+Comment.belongsTo(User,{as: 'Author', foreignKey: 'AuthorId'});
 User.hasMany(Quiz, {foreignKey: 'AuthorId'});
 Quiz.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'});
-
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
 exports.Comment = Comment;
 exports.User = User; 
