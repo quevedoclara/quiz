@@ -14,6 +14,7 @@ var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 var Comment = sequelize.import(path.join(__dirname,'comment'));
 var User = sequelize.import(path.join(__dirname,'user'));
 var Attachment = sequelize.import(path.join(__dirname,'attachment'));
+
 // Relaciones entre modelos
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
